@@ -1,449 +1,414 @@
---[[\n  XdHub Library - Soft Obfuscation\n]]--
-local _G,_ENV,getfenv,setfenv,tonumber,tostring,string,table,math,pcall=_G,_ENV,getfenv,setfenv,tonumber,tostring,string,table,math,pcall;
+local CoreGui = game:GetService("CoreGui")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
-local _u1 = game.GetService;
-local _u2 = _u1(game, "\067\111\114\101\071\117\105");
-local _u3 = _u1(game, "\084\119\101\101\110\083\101\114\118\105\099\101");
-local _u4 = _u1(game, "\085\115\101\114\105\110\112\117\116\083\101\114\118\105\099\101");
-local _u5 = _u1(game, "\080\108\097\121\101\114\115");
-local _u6 = _u5.LocalPlayer;
+local XdHubLib = {}
 
-local _lib = {}
+function XdHubLib.CrearWindow(config)
+	config = config or {}
+	local Nombre = config.Nombre or "XdHub"
+	local Subtitulo = config.Subtitulo or "XdHub Corporation"
 
-function _lib.CrearWindow(_cfg)
-	_cfg = _cfg or {}
-	local _name = _cfg.Nombre or "\088\100\072\117\098"
-	local _sub = _cfg.Subtitulo or "\088\100\072\117\098\032\067\111\114\112\111\114\097\116\105\111\110"
-
-	if _u2:FindFirstChild(_name) then
-		_u2[_name]:Destroy()
+	if CoreGui:FindFirstChild(Nombre) then
+		CoreGui[Nombre]:Destroy()
 	end
 
-	local _sg = Instance.new("\083\099\114\101\101\110\071\117\105")
-	_sg.Name = _name
-	_sg.Parent = _u2
-	_sg.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	local ScreenGui = Instance.new("ScreenGui")
+	ScreenGui.Name = Nombre
+	ScreenGui.Parent = CoreGui
+	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	ScreenGui.ResetOnSpawn = false
 
-	local _mf = Instance.new("\070\114\097\109\101")
-	_mf.Name = "\077\097\105\110\070\114\097\109\101"
-	_mf.Parent = _sg
-	_mf.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
-	_mf.Position = UDim2.new(0.5, -200, 0.5, -150)
-	_mf.Size = UDim2.new(0, 400, 0, 300)
-	_mf.ClipsToBounds = true
+	local MainFrame = Instance.new("Frame")
+	MainFrame.Name = "MainFrame"
+	MainFrame.Parent = ScreenGui
+	MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+	MainFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
+	MainFrame.Size = UDim2.new(0, 400, 0, 300)
+	MainFrame.ClipsToBounds = true
 
-	local _uic = Instance.new("\085\105\067\111\114\110\101\114")
-	_uic.CornerRadius = UDim.new(0, 8)
-	_uic.Parent = _mf
+	local UICorner = Instance.new("UICorner")
+	UICorner.CornerRadius = UDim.new(0, 8)
+	UICorner.Parent = MainFrame
 
-	_mf.Size = UDim2.new(0, 0, 0, 0)
-	_u3:Create(_mf, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 400, 0, 300)}):Play()
+	-- Animación de apertura
+	MainFrame.Size = UDim2.new(0, 0, 0, 0)
+	TweenService:Create(MainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 400, 0, 300)}):Play()
 
-	local _tb = Instance.new("\070\114\097\109\101")
-	_tb.Name = "\084\111\112\066\097\114"
-	_tb.Parent = _mf
-	_tb.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
-	_tb.Size = UDim2.new(1, 0, 0, 35)
+	local TopBar = Instance.new("Frame")
+	TopBar.Name = "TopBar"
+	TopBar.Parent = MainFrame
+	TopBar.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
+	TopBar.Size = UDim2.new(1, 0, 0, 35)
 
-	local _tbc = Instance.new("\085\105\067\111\114\110\101\114")
-	_tbc.CornerRadius = UDim.new(0, 8)
-	_tbc.Parent = _tb
+	local TopCorner = Instance.new("UICorner")
+	TopCorner.CornerRadius = UDim.new(0, 8)
+	TopCorner.Parent = TopBar
 
-	local _title = Instance.new("\084\101\120\116\076\097\098\101\108")
-	_title.Parent = _tb
-	_title.BackgroundTransparency = 1
-	_title.Position = UDim2.new(0, 10, 0, 0)
-	_title.Size = UDim2.new(0, 200, 1, 0)
-	_title.Font = Enum.Font.GothamBold
-	_title.Text = _name
-	_title.TextColor3 = Color3.fromRGB(255, 255, 255)
-	_title.TextSize = 14
-	_title.TextXAlignment = Enum.TextXAlignment.Left
+	local Title = Instance.new("TextLabel")
+	Title.Parent = TopBar
+	Title.BackgroundTransparency = 1
+	Title.Position = UDim2.new(0, 10, 0, 0)
+	Title.Size = UDim2.new(0, 200, 1, 0)
+	Title.Font = Enum.Font.GothamBold
+	Title.Text = Nombre
+	Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Title.TextSize = 14
+	Title.TextXAlignment = Enum.TextXAlignment.Left
 
-	local _subl = Instance.new("\084\101\120\116\076\097\098\101\108")
-	_subl.Parent = _tb
-	_subl.BackgroundTransparency = 1
-	_subl.Position = UDim2.new(0, 10, 0, 15)
-	_subl.Size = UDim2.new(0, 200, 1, 0)
-	_subl.Font = Enum.Font.Gotham
-	_subl.Text = _sub
-	_subl.TextColor3 = Color3.fromRGB(150, 150, 160)
-	_subl.TextSize = 10
-	_subl.TextXAlignment = Enum.TextXAlignment.Left
+	local SubTitleLabel = Instance.new("TextLabel")
+	SubTitleLabel.Parent = TopBar
+	SubTitleLabel.BackgroundTransparency = 1
+	SubTitleLabel.Position = UDim2.new(0, 10, 0, 15)
+	SubTitleLabel.Size = UDim2.new(0, 200, 1, 0)
+	SubTitleLabel.Font = Enum.Font.Gotham
+	SubTitleLabel.Text = Subtitulo
+	SubTitleLabel.TextColor3 = Color3.fromRGB(150, 150, 160)
+	SubTitleLabel.TextSize = 10
+	SubTitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
-	local _minbtn = Instance.new("\084\101\120\116\06%6\117\116\116\111\110" == "" and "TextButton" or "\084\101\120\116\066\117\116\116\111\110")
-	_minbtn.Parent = _tb
-	_minbtn.BackgroundColor3 = Color3.fromRGB(50, 50, 60)
-	_minbtn.Position = UDim2.new(1, -65, 0, 7)
-	_minbtn.Size = UDim2.new(0, 25, 0, 21)
-	_minbtn.Font = Enum.Font.GothamBold
-	_minbtn.Text = "-"
-	_minbtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-	_minbtn.TextSize = 14
-	
-	local _minc = Instance.new("\085\105\067\111\114\110\101\114")
-	_minc.CornerRadius = UDim.new(0, 4)
-	_minc.Parent = _minbtn
+	-- Botón Minimizar
+	local MinimizeBtn = Instance.new("TextButton")
+	MinimizeBtn.Parent = TopBar
+	MinimizeBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 60)
+	MinimizeBtn.Position = UDim2.new(1, -65, 0, 7)
+	MinimizeBtn.Size = UDim2.new(0, 25, 0, 21)
+	MinimizeBtn.Font = Enum.Font.GothamBold
+	MinimizeBtn.Text = "-"
+	MinimizeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+	MinimizeBtn.TextSize = 14
+	Instance.new("UICorner", MinimizeBtn).CornerRadius = UDim.new(0, 4)
 
-	local _clsbtn = Instance.new("\084\101\120\116\066\117\116\116\111\110")
-	_clsbtn.Parent = _tb
-	_clsbtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-	_clsbtn.Position = UDim2.new(1, -35, 0, 7)
-	_clsbtn.Size = UDim2.new(0, 25, 0, 21)
-	_clsbtn.Font = Enum.Font.GothamBold
-	_clsbtn.Text = "X"
-	_clsbtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-	_clsbtn.TextSize = 12
+	-- Botón Cerrar (Eliminar GUI)
+	local CloseBtn = Instance.new("TextButton")
+	CloseBtn.Parent = TopBar
+	CloseBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+	CloseBtn.Position = UDim2.new(1, -35, 0, 7)
+	CloseBtn.Size = UDim2.new(0, 25, 0, 21)
+	CloseBtn.Font = Enum.Font.GothamBold
+	CloseBtn.Text = "X"
+	CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+	CloseBtn.TextSize = 12
+	Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 4)
 
-	local _clsc = Instance.new("\085\105\067\111\114\110\101\114")
-	_clsc.CornerRadius = UDim.new(0, 4)
-	_clsc.Parent = _clsbtn
-
-	local _minimized = false
-	_minbtn.MouseButton1Click:Connect(function()
-		_minimized = not _minimized
-		local _ts = _minimized and UDim2.new(0, 400, 0, 35) or UDim2.new(0, 400, 0, 300)
-		_u3:Create(_mf, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = _ts}):Play()
+	local minimized = false
+	MinimizeBtn.MouseButton1Click:Connect(function()
+		minimized = not minimized
+		local targetSize = minimized and UDim2.new(0, 400, 0, 35) or UDim2.new(0, 400, 0, 300)
+		TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = targetSize}):Play()
 	end)
 
-	_clsbtn.MouseButton1Click:Connect(function()
-		_u3:Create(_mf, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Size = UDim2.new(0,0,0,0)}):Play()
+	CloseBtn.MouseButton1Click:Connect(function()
+		TweenService:Create(MainFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Size = UDim2.new(0,0,0,0)}):Play()
 		task.wait(0.2)
-		_sg:Destroy()
+		ScreenGui:Destroy()
 	end)
 
-	local _drag, _dinput, _dstart, _spos
-	_tb.InputBegan:Connect(function(_input)
-		if _input.UserInputType == Enum.UserInputType.MouseButton1 or _input.UserInputType == Enum.UserInputType.Touch then
-			_drag = true
-			_dstart = _input.Position
-			_spos = _mf.Position
-			_input.Changed:Connect(function()
-				if _input.UserInputState == Enum.UserInputState.End then
-					_drag = false
+	-- Arrastre seguro compatible con dispositivos móviles y PC
+	local dragging, dragInput, dragStart, startPos
+	TopBar.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = MainFrame.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
 				end
 			end)
 		end
 	end)
 
-	_tb.InputChanged:Connect(function(_input)
-		if _input.UserInputType == Enum.UserInputType.MouseMovement or _input.UserInputType == Enum.UserInputType.Touch then
-			_dinput = _input
+	TopBar.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
 		end
 	end)
 
-	_u4.InputChanged:Connect(function(_input)
-		if _input == _dinput and _drag then
-			local _delta = _input.Position - _dstart
-			_mf.Position = UDim2.new(_spos.X.Scale, _spos.X.Offset + _delta.X, _spos.Y.Scale, _spos.Y.Offset + _delta.Y)
+	UserInputService.InputChanged:Connect(function(input)
+		if input == dragInput and dragging then
+			local delta = input.Position - dragStart
+			MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 		end
 	end)
 
-	local _tcont = Instance.new("\083\099\114\111\108\108\105\110\103\070\114\097\109\101")
-	_tcont.Parent = _mf
-	_tcont.BackgroundTransparency = 1
-	_tcont.Position = UDim2.new(0, 10, 0, 45)
-	_tcont.Size = UDim2.new(1, -20, 0, 30)
-	_tcont.CanvasSize = UDim2.new(0, 0, 0, 0)
-	_tcont.ScrollBarThickness = 0
+	local TabButtonsContainer = Instance.new("ScrollingFrame")
+	TabButtonsContainer.Parent = MainFrame
+	TabButtonsContainer.BackgroundTransparency = 1
+	TabButtonsContainer.Position = UDim2.new(0, 10, 0, 45)
+	TabButtonsContainer.Size = UDim2.new(1, -20, 0, 30)
+	TabButtonsContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
+	TabButtonsContainer.ScrollBarThickness = 0
 
-	local _tlayout = Instance.new("\085\105\076\105\115\116\076\097\121\111\117\116")
-	_tlayout.Parent = _tcont
-	_tlayout.FillDirection = Enum.FillDirection.Horizontal
-	_tlayout.SortOrder = Enum.SortOrder.LayoutOrder
-	_tlayout.Padding = UDim.new(0, 5)
+	local UIListLayout = Instance.new("UIListLayout")
+	UIListLayout.Parent = TabButtonsContainer
+	UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout.Padding = UDim.new(0, 5)
 
-	local _pcont = Instance.new("\070\114\097\109\101")
-	_pcont.Parent = _mf
-	_pcont.BackgroundTransparency = 1
-	_pcont.Position = UDim2.new(0, 10, 0, 85)
-	_pcont.Size = UDim2.new(1, -20, 1, -95)
+	local PagesContainer = Instance.new("Frame")
+	PagesContainer.Parent = MainFrame
+	PagesContainer.BackgroundTransparency = 1
+	PagesContainer.Position = UDim2.new(0, 10, 0, 85)
+	PagesContainer.Size = UDim2.new(1, -20, 1, -95)
 
-	local _wobj = {}
+	local WindowObj = {}
 
-	function _wobj:CrearPestaña(_tpname)
-		local _tbtn = Instance.new("\084\101\120\116\066\117\116\116\111\110")
-		_tbtn.Parent = _tcont
-		_tbtn.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
-		_tbtn.Size = UDim2.new(0, 90, 1, 0)
-		_tbtn.Font = Enum.Font.GothamSemibold
-		_tbtn.Text = _tpname
-		_tbtn.TextColor3 = Color3.fromRGB(180, 180, 190)
-		_tbtn.TextSize = 12
+	function WindowObj:CrearPestaña(nombrePestaña)
+		local TabButton = Instance.new("TextButton")
+		TabButton.Parent = TabButtonsContainer
+		TabButton.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
+		TabButton.Size = UDim2.new(0, 90, 1, 0)
+		TabButton.Font = Enum.Font.GothamSemibold
+		TabButton.Text = nombrePestaña
+		TabButton.TextColor3 = Color3.fromRGB(180, 180, 190)
+		TabButton.TextSize = 12
+		Instance.new("UICorner", TabButton).CornerRadius = UDim.new(0, 6)
 
-		local _bcor = Instance.new("\085\105\067\111\114\110\101\114")
-		_bcor.CornerRadius = UDim.new(0, 6)
-		_bcor.Parent = _tbtn
+		local TabPage = Instance.new("ScrollingFrame")
+		TabPage.Parent = PagesContainer
+		TabPage.BackgroundTransparency = 1
+		TabPage.Size = UDim2.new(1, 0, 1, 0)
+		TabPage.Visible = false
+		TabPage.CanvasSize = UDim2.new(0, 0, 0, 0)
+		TabPage.ScrollBarThickness = 3
 
-		local _tpage = Instance.new("\083\099\114\111\108\108\105\110\103\070\114\097\109\101")
-		_tpage.Parent = _pcont
-		_tpage.BackgroundTransparency = 1
-		_tpage.Size = UDim2.new(1, 0, 1, 0)
-		_tpage.Visible = false
-		_tpage.CanvasSize = UDim2.new(0, 0, 0, 0)
-		_tpage.ScrollBarThickness = 3
+		local PageLayout = Instance.new("UIListLayout")
+		PageLayout.Parent = TabPage
+		PageLayout.SortOrder = Enum.SortOrder.LayoutOrder
+		PageLayout.Padding = UDim.new(0, 8)
 
-		local _playout = Instance.new("\085\105\076\105\115\116\076\097\121\111\117\116")
-		_playout.Parent = _tpage
-		_playout.SortOrder = Enum.SortOrder.LayoutOrder
-		_playout.Padding = UDim.new(0, 8)
-
-		_playout:GetPropertyChangedSignal("\065\098\115\111\108\117\116\101\067\111\110\116\101\110\116\083\105\122\101"):Connect(function()
-			_tpage.CanvasSize = UDim2.new(0, 0, 0, _playout.AbsoluteContentSize.Y + 10)
+		PageLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+			TabPage.CanvasSize = UDim2.new(0, 0, 0, PageLayout.AbsoluteContentSize.Y + 10)
 		end)
 
-		_tbtn.MouseButton1Click:Connect(function()
-			for _, _ch in ipairs(_pcont:GetChildren()) do
-				if _ch:IsA("\083\099\114\111\108\108\105\110\103\070\114\097\109\101") then _ch.Visible = false end
+		TabButton.MouseButton1Click:Connect(function()
+			for _, child in ipairs(PagesContainer:GetChildren()) do
+				if child:IsA("ScrollingFrame") then child.Visible = false end
 			end
-			for _, _ch in ipairs(_tcont:GetChildren()) do
-				if _ch:IsA("\084\101\120\116\066\117\116\116\111\110") then 
-					_ch.TextColor3 = Color3.fromRGB(180, 180, 190)
-					_ch.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
+			for _, child in ipairs(TabButtonsContainer:GetChildren()) do
+				if child:IsA("TextButton") then 
+					child.TextColor3 = Color3.fromRGB(180, 180, 190)
+					child.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
 				end
 			end
-			_tpage.Visible = true
-			_tbtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-			_tbtn.BackgroundColor3 = Color3.fromRGB(55, 55, 70)
+			TabPage.Visible = true
+			TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+			TabButton.BackgroundColor3 = Color3.fromRGB(55, 55, 70)
 		end)
 
-		if #_pcont:GetChildren() == 1 then
-			_tpage.Visible = true
-			_tbtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-			_tbtn.BackgroundColor3 = Color3.fromRGB(55, 55, 70)
+		if #PagesContainer:GetChildren() == 1 then
+			TabPage.Visible = true
+			TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+			TabButton.BackgroundColor3 = Color3.fromRGB(55, 55, 70)
 		end
 
-		local _tobj = {}
+		local TabObj = {}
 
-		function _tobj:CrearTextLabel(_txt)
-			local _lbl = Instance.new("\084\101\120\116\076\097\098\101\108")
-			_lbl.Parent = _tpage
-			_lbl.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
-			_lbl.Size = UDim2.new(1, -5, 0, 30)
-			_lbl.Font = Enum.Font.Gotham
-			_lbl.Text = "  " .. _txt
-			_lbl.TextColor3 = Color3.fromRGB(200, 200, 210)
-			_lbl.TextSize = 12
-			_lbl.TextXAlignment = Enum.TextXAlignment.Left
-
-			local _cor = Instance.new("\085\105\067\111\114\110\101\114")
-			_cor.CornerRadius = UDim.new(0, 6)
-			_cor.Parent = _lbl
+		function TabObj:CrearTextLabel(texto)
+			local Label = Instance.new("TextLabel")
+			Label.Parent = TabPage
+			Label.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
+			Label.Size = UDim2.new(1, -5, 0, 30)
+			Label.Font = Enum.Font.Gotham
+			Label.Text = "  " .. texto
+			Label.TextColor3 = Color3.fromRGB(200, 200, 210)
+			Label.TextSize = 12
+			Label.TextXAlignment = Enum.TextXAlignment.Left
+			Instance.new("UICorner", Label).CornerRadius = UDim.new(0, 6)
 		end
 
-		function _tobj:CrearToggle(_txt, _cb)
-			_cb = _cb or function() end
-			local _state = false
+		function TabObj:CrearToggle(texto, callback)
+			callback = callback or function() end
+			local toggled = false
 
-			_btn = Instance.new("\084\101\120\116\066\117\116\116\111\110")
-			_btn.Parent = _tpage
-			_btn.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
-			_btn.Size = UDim2.new(1, -5, 0, 35)
-			_btn.AutoButtonColor = false
-			_btn.Font = Enum.Font.Gotham
-			_btn.Text = "  " .. _txt
-			_btn.TextColor3 = Color3.fromRGB(200, 200, 210)
-			_btn.TextSize = 12
-			_btn.TextXAlignment = Enum.TextXAlignment.Left
+			local ToggleBtn = Instance.new("TextButton")
+			ToggleBtn.Parent = TabPage
+			ToggleBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
+			ToggleBtn.Size = UDim2.new(1, -5, 0, 35)
+			ToggleBtn.AutoButtonColor = false
+			ToggleBtn.Font = Enum.Font.Gotham
+			ToggleBtn.Text = "  " .. texto
+			ToggleBtn.TextColor3 = Color3.fromRGB(200, 200, 210)
+			ToggleBtn.TextSize = 12
+			ToggleBtn.TextXAlignment = Enum.TextXAlignment.Left
+			Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(0, 6)
 
-			local _cor = Instance.new("\085\105\067\111\114\110\101\114")
-			_cor.CornerRadius = UDim.new(0, 6)
-			_cor.Parent = _btn
+			local Indicator = Instance.new("Frame")
+			Indicator.Parent = ToggleBtn
+			Indicator.BackgroundColor3 = Color3.fromRGB(50, 50, 60)
+			Indicator.Position = UDim2.new(1, -45, 0.5, -10)
+			Indicator.Size = UDim2.new(0, 35, 0, 20)
+			Instance.new("UICorner", Indicator).CornerRadius = UDim.new(1, 0)
 
-			local _ind = Instance.new("\070\114\097\109\101")
-			_ind.Parent = _btn
-			_ind.BackgroundColor3 = Color3.fromRGB(50, 50, 60)
-			_ind.Position = UDim2.new(1, -45, 0.5, -10)
-			_ind.Size = UDim2.new(0, 35, 0, 20)
+			local Circle = Instance.new("Frame")
+			Circle.Parent = Indicator
+			Circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Circle.Position = UDim2.new(0, 2, 0.5, -8)
+			Circle.Size = UDim2.new(0, 16, 0, 16)
+			Instance.new("UICorner", Circle).CornerRadius = UDim.new(1, 0)
 
-			local _icor = Instance.new("\085\105\067\111\114\110\101\114")
-			_icor.CornerRadius = UDim.new(1, 0)
-			_icor.Parent = _ind
+			ToggleBtn.MouseButton1Click:Connect(function()
+				toggled = not toggled
+				local goalColor = toggled and Color3.fromRGB(0, 170, 255) or Color3.fromRGB(50, 50, 60)
+				local goalPos = toggled and UDim2.new(1, -18, 0.5, -8) or UDim2.new(0, 2, 0.5, -8)
 
-			local _circ = Instance.new("\070\114\097\109\101")
-			_circ.Parent = _ind
-			_circ.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			_circ.Position = UDim2.new(0, 2, 0.5, -8)
-			_circ.Size = UDim2.new(0, 16, 0, 16)
+				TweenService:Create(Indicator, TweenInfo.new(0.2), {BackgroundColor3 = goalColor}):Play()
+				TweenService:Create(Circle, TweenInfo.new(0.2), {Position = goalPos}):Play()
 
-			local _ccor = Instance.new("\085\105\067\111\114\110\101\114")
-			_ccor.CornerRadius = UDim.new(1, 0)
-			_ccor.Parent = _circ
-
-			_btn.MouseButton1Click:Connect(function()
-				_state = not _state
-				local _gcol = _state and Color3.fromRGB(0, 170, 255) or Color3.fromRGB(50, 50, 60)
-				local _gpos = _state and UDim2.new(1, -18, 0.5, -8) or UDim2.new(0, 2, 0.5, -8)
-
-				_u3:Create(_ind, TweenInfo.new(0.2), {BackgroundColor3 = _gcol}):Play()
-				_u3:Create(_circ, TweenInfo.new(0.2), {Position = _gpos}):Play()
-
-				pcall(_cb, _state)
+				pcall(callback, toggled)
 			end)
 		end
 
-		function _tobj:CrearSlider(_txt, _min, _max, _cb)
-			_min = _min or 0
-			_max = _max or 100
-			_cb = _cb or function() end
+		function TabObj:CrearSlider(texto, min, max, callback)
+			min = min or 0
+			max = max or 100
+			callback = callback or function() end
 
-			local _sframe = Instance.new("\070\114\097\109\101")
-			_sframe.Parent = _tpage
-			_sframe.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
-			_sframe.Size = UDim2.new(1, -5, 0, 50)
+			local SliderFrame = Instance.new("Frame")
+			SliderFrame.Parent = TabPage
+			SliderFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
+			SliderFrame.Size = UDim2.new(1, -5, 0, 50)
+			Instance.new("UICorner", SliderFrame).CornerRadius = UDim.new(0, 6)
 
-			local _cor = Instance.new("\085\105\067\111\114\110\101\114")
-			_cor.CornerRadius = UDim.new(0, 6)
-			_cor.Parent = _sframe
+			local Label = Instance.new("TextLabel")
+			Label.Parent = SliderFrame
+			Label.BackgroundTransparency = 1
+			Label.Position = UDim2.new(0, 10, 0, 5)
+			Label.Size = UDim2.new(1, -20, 0, 20)
+			Label.Font = Enum.Font.Gotham
+			Label.Text = texto .. ": " .. min
+			Label.TextColor3 = Color3.fromRGB(200, 200, 210)
+			Label.TextSize = 12
+			Label.TextXAlignment = Enum.TextXAlignment.Left
 
-			local _lbl = Instance.new("\084\101\120\116\076\097\098\101\108")
-			_lbl.Parent = _sframe
-			_lbl.BackgroundTransparency = 1
-			_lbl.Position = UDim2.new(0, 10, 0, 5)
-			_lbl.Size = UDim2.new(1, -20, 0, 20)
-			_lbl.Font = Enum.Font.Gotham
-			_lbl.Text = _txt .. ": " .. _min
-			_lbl.TextColor3 = Color3.fromRGB(200, 200, 210)
-			_lbl.TextSize = 12
-			_lbl.TextXAlignment = Enum.TextXAlignment.Left
+			local SliderBar = Instance.new("Frame")
+			SliderBar.Parent = SliderFrame
+			SliderBar.BackgroundColor3 = Color3.fromRGB(50, 50, 60)
+			SliderBar.Position = UDim2.new(0, 10, 0, 32)
+			SliderBar.Size = UDim2.new(1, -20, 0, 6)
+			Instance.new("UICorner", SliderBar).CornerRadius = UDim.new(1, 0)
 
-			local _sbar = Instance.new("\070\114\097\109\101")
-			_sbar.Parent = _sframe
-			_sbar.BackgroundColor3 = Color3.fromRGB(50, 50, 60)
-			_sbar.Position = UDim2.new(0, 10, 0, 32)
-			_sbar.Size = UDim2.new(1, -20, 0, 6)
+			local Fill = Instance.new("Frame")
+			Fill.Parent = SliderBar
+			Fill.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+			Fill.Size = UDim2.new(0, 0, 1, 0)
+			Instance.new("UICorner", Fill).CornerRadius = UDim.new(1, 0)
 
-			local _bcor = Instance.new("\085\105\067\111\114\110\101\114")
-			_bcor.CornerRadius = UDim.new(1, 0)
-			_bcor.Parent = _sbar
-
-			local _fill = Instance.new("\070\114\097\109\101")
-			_fill.Parent = _sbar
-			_fill.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-			_fill.Size = UDim2.new(0, 0, 1, 0)
-
-			local _fcor = Instance.new("\085\105\067\111\114\110\101\114")
-			_fcor.CornerRadius = UDim.new(1, 0)
-			_fcor.Parent = _fill
-
-			local _dslider = false
-			local function _upd(_input)
-				local _pos = UDim2.new(math.clamp((_input.Position.X - _sbar.AbsolutePosition.X) / _sbar.AbsoluteSize.X, 0, 1), 0, 1, 0)
-				_fill.Size = _pos
-				local _val = math.floor(_min + ((_max - _min) * _pos.X.Scale))
-				_lbl.Text = _txt .. ": " .. _val
-				pcall(_cb, _val)
+			local draggingSlider = false
+			local function updateSlider(input)
+				local pos = UDim2.new(math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1), 0, 1, 0)
+				Fill.Size = pos
+				local val = math.floor(min + ((max - min) * pos.X.Scale))
+				Label.Text = texto .. ": " .. val
+				pcall(callback, val)
 			end
 
-			_sbar.InputBegan:Connect(function(_input)
-				if _input.UserInputType == Enum.UserInputType.MouseButton1 or _input.UserInputType == Enum.UserInputType.Touch then
-					_dslider = true
-					_upd(_input)
+			SliderBar.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+					draggingSlider = true
+					updateSlider(input)
 				end
 			end)
 
-			_u4.InputEnded:Connect(function(_input)
-				if _input.UserInputType == Enum.UserInputType.MouseButton1 or _input.UserInputType == Enum.UserInputType.Touch then
-					_dslider = false
+			UserInputService.InputEnded:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+					draggingSlider = false
 				end
 			end)
 
-			_u4.InputChanged:Connect(function(_input)
-				if _dslider and (_input.UserInputType == Enum.UserInputType.MouseMovement or _input.UserInputType == Enum.UserInputType.Touch) then
-					_upd(_input)
-				end
-			end)
-		end
-
-		function _tobj:CrearTextbox(_pholder, _cb)
-			_cb = _cb or function() end
-
-			local _tbox = Instance.new("\084\101\120\116\066\111\120")
-			_tbox.Parent = _tpage
-			_tbox.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
-			_tbox.Size = UDim2.new(1, -5, 0, 35)
-			_tbox.Font = Enum.Font.Gotham
-			_tbox.PlaceholderText = _pholder
-			_tbox.Text = ""
-			_tbox.TextColor3 = Color3.fromRGB(255, 255, 255)
-			_tbox.PlaceholderColor3 = Color3.fromRGB(120, 120, 130)
-			_tbox.TextSize = 12
-			_tbox.ClearTextOnFocus = false
-
-			local _cor = Instance.new("\085\105\067\111\114\110\101\114")
-			_cor.CornerRadius = UDim.new(0, 6)
-			_cor.Parent = _tbox
-
-			_tbox.FocusLost:Connect(function(_enter)
-				if _enter then
-					pcall(_cb, _tbox.Text)
+			UserInputService.InputChanged:Connect(function(input)
+				if draggingSlider and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+					updateSlider(input)
 				end
 			end)
 		end
 
-		function _tobj:CrearDropdown(_txt, _opts, _cb)
-			_opts = _opts or {}
-			_cb = _cb or function() end
-			local _opened = false
+		function TabObj:CrearTextbox(textoPlaceholder, callback)
+			callback = callback or function() end
 
-			local _dfram = Instance.new("\070\114\097\109\101")
-			_dfram.Parent = _tpage
-			_dfram.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
-			_dfram.Size = UDim2.new(1, -5, 0, 35)
-			_dfram.ClipsToBounds = true
+			local TextBox = Instance.new("TextBox")
+			TextBox.Parent = TabPage
+			TextBox.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
+			TextBox.Size = UDim2.new(1, -5, 0, 35)
+			TextBox.Font = Enum.Font.Gotham
+			TextBox.PlaceholderText = textoPlaceholder
+			TextBox.Text = ""
+			TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+			TextBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 130)
+			TextBox.TextSize = 12
+			TextBox.ClearTextOnFocus = false
+			Instance.new("UICorner", TextBox).CornerRadius = UDim.new(0, 6)
 
-			local _cor = Instance.new("\085\105\067\111\114\110\101\114")
-			_cor.CornerRadius = UDim.new(0, 6)
-			_cor.Parent = _dfram
+			TextBox.FocusLost:Connect(function(enterPressed)
+				if enterPressed then
+					pcall(callback, TextBox.Text)
+				end
+			end)
+		end
 
-			local _dbtn = Instance.new("\084\101\120\116\066\117\116\116\111\110")
-			_dbtn.Parent = _dfram
-			_dbtn.BackgroundTransparency = 1
-			_dbtn.Size = UDim2.new(1, 0, 0, 35)
-			_dbtn.Font = Enum.Font.Gotham
-			_dbtn.Text = "  " .. _txt .. " v"
-			_dbtn.TextColor3 = Color3.fromRGB(200, 200, 210)
-			_dbtn.TextSize = 12
-			_dbtn.TextXAlignment = Enum.TextXAlignment.Left
+		function TabObj:CrearDropdown(texto, opciones, callback)
+			opciones = opciones or {}
+			callback = callback or function() end
+			local opened = false
 
-			local _llayout = Instance.new("\085\105\076\105\115\116\076\097\121\111\117\116")
-			_llayout.Parent = _dfram
-			_llayout.SortOrder = Enum.SortOrder.LayoutOrder
-			_llayout.Padding = UDim.new(0, 2)
+			local DropFrame = Instance.new("Frame")
+			DropFrame.Parent = TabPage
+			DropFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
+			DropFrame.Size = UDim2.new(1, -5, 0, 35)
+			DropFrame.ClipsToBounds = true
+			Instance.new("UICorner", DropFrame).CornerRadius = UDim.new(0, 6)
 
-			local _h1 = 35
-			local _h2 = 35 + (#_opts * 30)
+			local DropBtn = Instance.new("TextButton")
+			DropBtn.Parent = DropFrame
+			DropBtn.BackgroundTransparency = 1
+			DropBtn.Size = UDim2.new(1, 0, 0, 35)
+			DropBtn.Font = Enum.Font.Gotham
+			DropBtn.Text = "  " .. texto .. " v"
+			DropBtn.TextColor3 = Color3.fromRGB(200, 200, 210)
+			DropBtn.TextSize = 12
+			DropBtn.TextXAlignment = Enum.TextXAlignment.Left
 
-			_dbtn.MouseButton1Click:Connect(function()
-				_opened = not _opened
-				local _tsize = _opened and UDim2.new(1, -5, 0, _h2) or UDim2.new(1, -5, 0, _h1)
-				_u3:Create(_dfram, TweenInfo.new(0.2), {Size = _tsize}):Play()
+			local ListLayout = Instance.new("UIListLayout")
+			ListLayout.Parent = DropFrame
+			ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			ListLayout.Padding = UDim.new(0, 2)
+
+			local heightOriginal = 35
+			local heightExpanded = 35 + (#opciones * 30)
+
+			DropBtn.MouseButton1Click:Connect(function()
+				opened = not opened
+				local targetSize = opened and UDim2.new(1, -5, 0, heightExpanded) or UDim2.new(1, -5, 0, heightOriginal)
+				TweenService:Create(DropFrame, TweenInfo.new(0.2), {Size = targetSize}):Play()
 			end)
 
-			for _, _opt in ipairs(_opts) do
-				local _obtn = Instance.new("\084\101\120\116\066\117\116\116\111\110")
-				_obtn.Parent = _dfram
-				_obtn.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
-				_obtn.Size = UDim2.new(1, 0, 0, 28)
-				_obtn.Font = Enum.Font.Gotham
-				_obtn.Text = "    " .. tostring(_opt)
-				_obtn.TextColor3 = Color3.fromRGB(170, 170, 180)
-				_obtn.TextSize = 11
-				_obtn.TextXAlignment = Enum.TextXAlignment.Left
+			for _, opcion in ipairs(opciones) do
+				local OpBtn = Instance.new("TextButton")
+				OpBtn.Parent = DropFrame
+				OpBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+				OpBtn.Size = UDim2.new(1, 0, 0, 28)
+				OpBtn.Font = Enum.Font.Gotham
+				OpBtn.Text = "    " .. tostring(opcion)
+				OpBtn.TextColor3 = Color3.fromRGB(170, 170, 180)
+				OpBtn.TextSize = 11
+				OpBtn.TextXAlignment = Enum.TextXAlignment.Left
 
-				_obtn.MouseButton1Click:Connect(function()
-					_opened = false
-					_dbtn.Text = "  " .. _txt .. ": " .. tostring(_opt) .. " v"
-					_u3:Create(_dfram, TweenInfo.new(0.2), {Size = UDim2.new(1, -5, 0, _h1)}):Play()
-					pcall(_cb, _opt)
+				OpBtn.MouseButton1Click:Connect(function()
+					opened = false
+					DropBtn.Text = "  " .. texto .. ": " .. tostring(opcion) .. " v"
+					TweenService:Create(DropFrame, TweenInfo.new(0.2), {Size = UDim2.new(1, -5, 0, heightOriginal)}):Play()
+					pcall(callback, opcion)
 				end)
 			end
 		end
 
-		return _tobj
+		return TabObj
 	end
 
-	return _wobj
+	return WindowObj
 end
 
-return _lib
+return XdHubLib
