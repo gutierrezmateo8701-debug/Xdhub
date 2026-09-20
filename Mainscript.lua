@@ -2,7 +2,6 @@ local CoreGui = game:GetService("CoreGui")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
 
 local XdHubLib = {}
 
@@ -33,7 +32,6 @@ function XdHubLib.CrearWindow(config)
 	UICorner.CornerRadius = UDim.new(0, 8)
 	UICorner.Parent = MainFrame
 
-	-- Animación de apertura
 	MainFrame.Size = UDim2.new(0, 0, 0, 0)
 	TweenService:Create(MainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 400, 0, 300)}):Play()
 
@@ -69,7 +67,6 @@ function XdHubLib.CrearWindow(config)
 	SubTitleLabel.TextSize = 10
 	SubTitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
-	-- Botón Minimizar
 	local MinimizeBtn = Instance.new("TextButton")
 	MinimizeBtn.Parent = TopBar
 	MinimizeBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 60)
@@ -81,7 +78,6 @@ function XdHubLib.CrearWindow(config)
 	MinimizeBtn.TextSize = 14
 	Instance.new("UICorner", MinimizeBtn).CornerRadius = UDim.new(0, 4)
 
-	-- Botón Cerrar (Eliminar GUI)
 	local CloseBtn = Instance.new("TextButton")
 	CloseBtn.Parent = TopBar
 	CloseBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
@@ -106,7 +102,6 @@ function XdHubLib.CrearWindow(config)
 		ScreenGui:Destroy()
 	end)
 
-	-- Arrastre seguro compatible con dispositivos móviles y PC
 	local dragging, dragInput, dragStart, startPos
 	TopBar.InputBegan:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
